@@ -23,7 +23,7 @@ namespace InheritanceLab
 
     public class Program
     {
-        private static readonly int MAX_POINTS = 25;
+        private static readonly int MAX_POINTS = 15;
 
         public static void Main()
         {
@@ -31,29 +31,17 @@ namespace InheritanceLab
 
             String[] items = File.ReadAllLines("inputs.txt");
             int[] productTypeDistribution = new int[Enum.GetNames(typeof(ProductTypes)).Length];
+            List<InventoryItem?> inventoryItems = new List<InventoryItem?>();
 
             foreach (String item in items)
             {
                 String[] itemSplit = item.Split(",").Select(x => x.Trim()).ToArray();
                 List<String> miscAttributes = itemSplit.Skip(5).ToList();
-                Categorizer.Creator((ProductTypes)int.Parse(itemSplit[0]), itemSplit[1], itemSplit[2], int.Parse(itemSplit[3]), float.Parse(itemSplit[4]), miscAttributes);
+                inventoryItems.Add(InventoryItem.Create((ProductTypes)int.Parse(itemSplit[0]), itemSplit[1], itemSplit[2], int.Parse(itemSplit[3]), float.Parse(itemSplit[4]), miscAttributes));
                 productTypeDistribution[int.Parse(itemSplit[0])]++;
             }
 
-            Console.WriteLine("Checking InventoryItems' validity...");
-
-            if (Categorizer.InventoryItems.Count > items.Length)
-            {
-                Console.Error.WriteLine("Too many items were added to the InventoryItems list!");
-                Finalize(0);
-            }
-            else if (Categorizer.InventoryItems.Count < items.Length)
-            {
-                Console.Error.WriteLine("Not every item was added to the InventoryItems list!");
-                Finalize(0);
-            }
-
-            currentPoints -= CheckInventoryList(productTypeDistribution, 5);
+            currentPoints -= CheckInventoryList(inventoryItems, productTypeDistribution, 5);
 
             currentPoints -= CheckProperties(1);
 
@@ -61,25 +49,29 @@ namespace InheritanceLab
 
             currentPoints -= CheckDisplays(1);
 
-            foreach (InventoryItem item in Categorizer.InventoryItems)
+            foreach (InventoryItem? item in inventoryItems)
             {
+                if (item == null)
+                {
+                    continue;
+                }
                 item.DisplayItem();
             }
-
-            Console.WriteLine("Checking bubble sort...");
-
-            currentPoints -= CheckBubbleSort(5);
 
             Finalize(currentPoints);
         }
 
-        private static float CheckInventoryList(int[] itemListDistribution, int maxPointsLost = 5)
+        private static float CheckInventoryList(List<InventoryItem?> inventoryItems, int[] itemListDistribution, int maxPointsLost = 5)
         {
             float pointsLost = 0;
 
-            foreach (InventoryItem item in Categorizer.InventoryItems)
+            foreach (InventoryItem? item in inventoryItems)
             {
-                if (item.GetType() == typeof(Laptop))
+                if (item == null)
+                {
+                    continue;
+                }    
+                else if (item.GetType() == typeof(Laptop))
                 {
                     itemListDistribution[(int)ProductTypes.Laptop]--;
                 }
@@ -111,7 +103,7 @@ namespace InheritanceLab
 
             if (pointsLost > 0)
             {
-                Console.Error.WriteLine("The types in the InventoryItems list are not all correct. Are some using the base class?");
+                Console.Error.WriteLine("The types in the InventoryItems list are not all correct.");
             }
 
             return Math.Min(maxPointsLost, pointsLost);
@@ -187,56 +179,6 @@ namespace InheritanceLab
             {
                 Console.Error.WriteLine("AirFryer display method has not been overridden!");
                 pointsLost += pointsLostForEach;
-            }
-
-            return pointsLost;
-        }
-
-        private static int CheckBubbleSort(int maxPointsToLose = 5)
-        {
-            int pointsLost = 0;
-
-            List<InventoryItem> linqSorted = null!;
-            List<InventoryItem> studentSortedList = null!;
-
-            if (Categorizer.InventoryItems != null)
-            {
-                linqSorted = Categorizer.InventoryItems.OrderByDescending(x => x.Price).ToList();
-                studentSortedList = Categorizer.PerformBubbleSort();
-            }
-            else
-            {
-                Console.Error.WriteLine("The InventoryItems list is null!");
-                return maxPointsToLose;
-            }
-
-            if (studentSortedList == null)
-            {
-                Console.Error.WriteLine("The list returned from the bubble sort was null!");
-                pointsLost = maxPointsToLose;
-            }
-            else if (studentSortedList!.Count != Categorizer.InventoryItems.Count)
-            {
-                Console.Error.WriteLine("List from bubble sort has a different amount of elements from the InventoryItems global.");
-                pointsLost = maxPointsToLose;
-            }
-            else
-            {
-                int pointsSubtracted = 0;
-
-                for (int i = 0; i < Categorizer.InventoryItems.Count; i++)
-                {
-                    if (linqSorted[i].Price != studentSortedList[i].Price)
-                    {
-                        pointsSubtracted++;
-                    }
-                }
-
-                if (pointsSubtracted > 0)
-                {
-                    Console.Error.WriteLine("The list was not sorted properly. There are still items out of order.");
-                    pointsLost += Math.Min(maxPointsToLose, pointsSubtracted);
-                }
             }
 
             return pointsLost;

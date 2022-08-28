@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InheritanceLab", "InheritanceLab\InheritanceLab.csproj", "{4B8C1693-71CB-4ED2-B885-E37A308DF40F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FactoryLab", "FactoryLab\FactoryLab.csproj", "{4B8C1693-71CB-4ED2-B885-E37A308DF40F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
