@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace InheritanceLab
+namespace FactoryLab
 {
     public enum ProductTypes
     {
