@@ -18,10 +18,4 @@ public abstract class InventoryItem
         //TODO: Implement the DisplayItem method
         throw new NotImplementedException();
     }
-
-    public static InventoryItem? Create(ProductType productType, String brand, String title, int quantityOnHand, float price, List<String> miscAttributes)
-    {
-        //TODO: Implement the factory method
-        return null;
-    }
 }
