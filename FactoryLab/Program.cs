@@ -23,7 +23,7 @@ namespace FactoryLab
 
     public class Program
     {
-        private static readonly int MAX_POINTS = 15;
+        private static readonly int MAX_POINTS = 10;
 
         public static void Main()
         {
@@ -31,7 +31,7 @@ namespace FactoryLab
 
             String[] items = File.ReadAllLines("inputs.txt");
             int[] productTypeDistribution = new int[Enum.GetNames(typeof(ProductTypes)).Length];
-            List<InventoryItem?> inventoryItems = new List<InventoryItem?>();
+            List<InventoryItem?> inventoryItems = [];
 
             foreach (String item in items)
             {
@@ -187,14 +187,17 @@ namespace FactoryLab
         private static void Finalize(float points)
         {
             points = Math.Max(points, 0);
-            Console.WriteLine("\n" + points + "/" + MAX_POINTS + " scored.");
+            Console.WriteLine($"{Environment.NewLine}{points}/{MAX_POINTS} scored.");
             Console.WriteLine((points / MAX_POINTS * 100).ToString("0.0") + "%");
 
             try
             {
                 Environment.Exit(0);
             }
-            catch { }
+            catch 
+            {
+                Console.Error.WriteLine("Error terminating the program. Any additional output is not part of the grading process.");
+            }
         }
     }
 }
