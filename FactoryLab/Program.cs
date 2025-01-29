@@ -23,7 +23,7 @@ namespace FactoryLab
 
     public class Program
     {
-        private static readonly int MAX_POINTS = 10;
+        private static readonly int MAX_POINTS = 5;
 
         public static void Main()
         {
