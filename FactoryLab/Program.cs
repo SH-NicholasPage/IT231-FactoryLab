@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace FactoryLab
 {
-    public enum ProductTypes
+    public enum ProductType
     {
         Laptop,
         Smartphone,
@@ -30,14 +30,14 @@ namespace FactoryLab
             float currentPoints = MAX_POINTS;
 
             String[] items = File.ReadAllLines("inputs.txt");
-            int[] productTypeDistribution = new int[Enum.GetNames(typeof(ProductTypes)).Length];
+            int[] productTypeDistribution = new int[Enum.GetNames(typeof(ProductType)).Length];
             List<InventoryItem?> inventoryItems = [];
 
             foreach (String item in items)
             {
                 String[] itemSplit = item.Split(",").Select(x => x.Trim()).ToArray();
                 List<String> miscAttributes = itemSplit.Skip(5).ToList();
-                inventoryItems.Add(InventoryItem.Create((ProductTypes)int.Parse(itemSplit[0]), itemSplit[1], itemSplit[2], int.Parse(itemSplit[3]), float.Parse(itemSplit[4]), miscAttributes));
+                inventoryItems.Add(InventoryItem.Create((ProductType)int.Parse(itemSplit[0]), itemSplit[1], itemSplit[2], int.Parse(itemSplit[3]), float.Parse(itemSplit[4]), miscAttributes));
                 productTypeDistribution[int.Parse(itemSplit[0])]++;
             }
 
@@ -73,23 +73,23 @@ namespace FactoryLab
                 }    
                 else if (item.GetType() == typeof(Laptop))
                 {
-                    itemListDistribution[(int)ProductTypes.Laptop]--;
+                    itemListDistribution[(int)ProductType.Laptop]--;
                 }
                 else if (item.GetType() == typeof(Smartphone))
                 {
-                    itemListDistribution[(int)ProductTypes.Smartphone]--;
+                    itemListDistribution[(int)ProductType.Smartphone]--;
                 }
                 else if (item.GetType() == typeof(RoboticVacuum))
                 {
-                    itemListDistribution[(int)ProductTypes.RoboticVacuum]--;
+                    itemListDistribution[(int)ProductType.RoboticVacuum]--;
                 }
                 else if (item.GetType() == typeof(Camera))
                 {
-                    itemListDistribution[(int)ProductTypes.Camera]--;
+                    itemListDistribution[(int)ProductType.Camera]--;
                 }
                 else if (item.GetType() == typeof(AirFryer))
                 {
-                    itemListDistribution[(int)ProductTypes.AirFryer]--;
+                    itemListDistribution[(int)ProductType.AirFryer]--;
                 }
             }
 
